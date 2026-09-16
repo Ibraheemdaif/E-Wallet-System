@@ -21,7 +21,7 @@ public class AppController {
     public void run() {
         new MainPage().show();
         ConsoleAssistant.pause();
-
+        ConsoleAssistant.clear();
         while (true) {
             if (currentUser == null) {
                 handleAuthMenu();
@@ -34,8 +34,8 @@ public class AppController {
 
     private void handleAuthMenu() {
         new AuthMenuPage().show();
-        int choice = ConsoleAssistant.readIntInRange("\n \t Choose a Number : ", 0, 2);
-
+        int choice = ConsoleAssistant.readIntInRange("\n \t Choose an Option : ", 0, 2);
+        ConsoleAssistant.clear();
         switch (choice) {
             case 1 -> handleLogin();
             case 2 -> handleRegister();
@@ -47,8 +47,8 @@ public class AppController {
     private void handleLogin() {
         LoginPage loginPage = new LoginPage();
         loginPage.show();
-        String phoneNumber = ConsoleAssistant.readString("Enter phone number : ");
-        String password = ConsoleAssistant.readPassword("Enter password : ");
+        String phoneNumber = ConsoleAssistant.readString("\n\tEnter phone number : ");
+        String password = ConsoleAssistant.readPassword("\n\tEnter password : ");
 
         try {
             currentUser = userService.login(phoneNumber, password);
@@ -63,9 +63,9 @@ public class AppController {
     private void handleRegister() {
         RegisterPage registerPage = new RegisterPage();
         registerPage.show();
-        String name = ConsoleAssistant.readString("Enter Your Name : ");
-        String phoneNumber = ConsoleAssistant.readString("Enter Your Phone number : ");
-        String password = ConsoleAssistant.readPassword("Enter Your Password : ");
+        String name = ConsoleAssistant.readString("\n\tEnter Your Name : ");
+        String phoneNumber = ConsoleAssistant.readString("\n\tEnter Your Phone number : ");
+        String password = ConsoleAssistant.readPassword("\n\tEnter Your Password : ");
 
         try {
             userService.register(name, phoneNumber, password);
@@ -81,7 +81,7 @@ public class AppController {
         HomePage homePage = new HomePage(currentUser, walletService);
         homePage.show();
         new MenuPage().show();
-        int choice = ConsoleAssistant.readIntInRange("Choose a Number : ", 0, 6);
+        int choice = ConsoleAssistant.readIntInRange("\nChoose a Number of option : ", 0, 6);
 
         switch (choice) {
             case 1 -> handleDeposit();
@@ -146,9 +146,12 @@ public class AppController {
     private void handleHistory() {
         ConsoleAssistant.clear();
         new HistoryPage(walletService.getTransactionHistory(currentUser)).show();
+        ConsoleAssistant.pause("\n\nPress Enter to back to home...... ");
+        ConsoleAssistant.clear();
     }
 
     private void handleSettings() {
+        ConsoleAssistant.clear();
         SettingPage settingPage = new SettingPage();
         settingPage.show();
         int choice = ConsoleAssistant.readIntInRange("Choose a Number : ", 0, 3);

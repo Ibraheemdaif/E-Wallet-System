@@ -15,8 +15,9 @@ public class HomePage implements Page {
     @Override
     public void show() {
         displayHeader("Welcome, " + currentUser.getName());
-        System.out.println("Current Balance : " + currentUser.getWallet().getBalance());
-        System.out.println("Total Deposits  : " + walletService.getTotalDepositAmount(currentUser));
-        System.out.println("Total Withdraws : " + walletService.getTotalWithdrawAmount(currentUser) + "\n\n");
+        System.out.println("  Current Balance : " + currentUser.getWallet().getBalance());
+        System.out.println("  Total Deposits  : " + walletService.getTotalDepositAmount(currentUser));
+        System.out.println("  Total Withdraws : " + walletService.getTotalWithdrawAmount(currentUser) + "\n\n");
+
     }
 }

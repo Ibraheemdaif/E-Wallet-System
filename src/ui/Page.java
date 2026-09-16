@@ -15,15 +15,17 @@ public interface Page {
     }
 
     default void success (String message) {
-        System.out.println("\n✔ " + message);
+        System.out.println(message);
     }
 
     default void error(String message) {
-        System.out.println("\n✘ " + message);
+        System.out.println(message);
     }
 
     default void subHeader(String title) {
-        System.out.println(center("[ " + title + " ]"));
+        System.out.println(center("\n\n╔═----------------------------═╗"));
+        System.out.println(center(title));
+        System.out.println(center("╚═----------------------------═╝"));
         System.out.println("\n");
     }
 

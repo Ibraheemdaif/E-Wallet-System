@@ -12,7 +12,7 @@ public class HistoryPage implements Page {
 
     @Override
     public void show() {
-        displayHeader("Transaction History");
+        subHeader("Transaction History");
         if (transactions.isEmpty()) {
             System.out.println("No transactions yet.");
             return;

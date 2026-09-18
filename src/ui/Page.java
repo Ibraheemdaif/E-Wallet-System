@@ -1,5 +1,5 @@
 package ui;
-
+import console.*;
 public interface Page {
 
     void show();
@@ -15,10 +15,12 @@ public interface Page {
     }
 
     default void success (String message) {
+        ConsoleAssistant.clear();
         System.out.println(message);
     }
-
+    
     default void error(String message) {
+        ConsoleAssistant.clear();
         System.out.println(message);
     }
 

@@ -21,9 +21,9 @@ public class AppController {
     public void run() {
         new MainPage().show();
         ConsoleAssistant.pause();
-        ConsoleAssistant.clear();
         while (true) {
             if (currentUser == null) {
+                ConsoleAssistant.clear();
                 handleAuthMenu();
             } else {
                 handleHomeMenu();
@@ -39,7 +39,6 @@ public class AppController {
         switch (choice) {
             case 1 -> handleLogin();
             case 2 -> handleRegister();
-
             case 0 -> System.exit(0);
         }
     }
@@ -52,10 +51,8 @@ public class AppController {
 
         try {
             currentUser = userService.login(phoneNumber, password);
-            ConsoleAssistant.clear();
             loginPage.success("\nLogin Done Successfully.");
         } catch (AppExceptions e) {
-            ConsoleAssistant.clear();
             loginPage.error("\n ! Login Failed, Invalid phone number or password" + "\n ! If you don't have one yet, go to the signup page. \n");
         }
     }
@@ -69,10 +66,8 @@ public class AppController {
 
         try {
             userService.register(name, phoneNumber, password);
-            ConsoleAssistant.clear();
             registerPage.success("\nRegistration Successful.");
         } catch (AppExceptions | IllegalArgumentException e) {
-            ConsoleAssistant.clear();
             registerPage.error("\nRegistration Failed: " + e.getMessage());
         }
     }
@@ -88,11 +83,9 @@ public class AppController {
             case 2 -> handleWithdraw();
             case 3 -> handleTransfer();
             case 4 -> handleHistory();
-            case 5 -> {
-                currentUser = null;
-                ConsoleAssistant.clear();
-            }
-            case 6 -> handleSettings();
+            case 5 -> currentUser = null;
+
+            case 6 -> handleSettingsMenu();
             case 0 -> System.exit(0);
         }
     }
@@ -104,10 +97,8 @@ public class AppController {
 
         try {
             walletService.deposit(currentUser, amount);
-            ConsoleAssistant.clear();
             depositPage.success("Deposit successful. New balance: " + currentUser.getWallet().getBalance());
         } catch (AppExceptions e) {
-            ConsoleAssistant.clear();
             depositPage.error(e.getMessage());
         }
     }
@@ -119,10 +110,8 @@ public class AppController {
 
         try {
             walletService.withdraw(currentUser, amount);
-            ConsoleAssistant.clear();
             withdrawPage.success("Withdraw successful. New balance: " + currentUser.getWallet().getBalance());
         } catch (AppExceptions e) {
-            ConsoleAssistant.clear();
             withdrawPage.error(e.getMessage());
         }
     }
@@ -135,10 +124,8 @@ public class AppController {
 
         try {
             walletService.transfer(currentUser, receiverPhone, amount);
-            ConsoleAssistant.clear();
             transferPage.success("Transfer successful. New balance: " + currentUser.getWallet().getBalance());
         } catch (AppExceptions e) {
-            ConsoleAssistant.clear();
             transferPage.error(e.getMessage());
         }
     }
@@ -150,7 +137,7 @@ public class AppController {
         ConsoleAssistant.clear();
     }
 
-    private void handleSettings() {
+    private void handleSettingsMenu() {
         ConsoleAssistant.clear();
         SettingPage settingPage = new SettingPage();
         settingPage.show();
@@ -160,37 +147,34 @@ public class AppController {
             case 1 -> handleChangePassword(settingPage);
             case 2 -> handleChangeName(settingPage);
             case 3 -> handleDeleteUser(settingPage);
-            case 0 -> {
-                ConsoleAssistant.clear();
-            }
+            case 0 -> ConsoleAssistant.clear();
 
         }
     }
 
     private void handleChangePassword(SettingPage settingPage) {
         do {
-            String currentPassword = ConsoleAssistant.readPassword("Enter Current Password : ");
-            String newPassword = ConsoleAssistant.readPassword("Enter New Password : ");
+            String currentPassword = ConsoleAssistant.readPassword("\n\nEnter Current Password : ");
+            String newPassword = ConsoleAssistant.readPassword("\nEnter New Password : ");
 
             try {
                 userService.changePassword(currentUser, currentPassword, newPassword);
-                ConsoleAssistant.clear();
+                // ConsoleAssistant.clear();
                 settingPage.success("Password Updated Successfully.");
                 return;
             } catch (AuthenticationException e) {
                 settingPage.error(e.getMessage());
             }
-        } while (ConsoleAssistant.readIntInRange("Again ? Press 1 , for Back press 0.", 0, 1) == 1);
+        } while (ConsoleAssistant.readIntInRange("\nAgain ? Press 1 , for Back press 0.", 0, 1) == 1);
         ConsoleAssistant.clear();
     }
 
     private void handleChangeName(SettingPage settingPage) {
         do {
             try {
-                String password = ConsoleAssistant.readPassword("Enter Your Password : ");
-                String newName = ConsoleAssistant.readString("Enter new Name : ");
+                String password = ConsoleAssistant.readPassword("\nEnter Your Password : ");
+                String newName = ConsoleAssistant.readString("\nEnter new Name : ");
                 userService.changeName(currentUser, newName, password);
-                ConsoleAssistant.clear();
                 settingPage.success("Name Updated Successfully.");
                 return;
             } catch (AuthenticationException e) {
@@ -203,16 +187,15 @@ public class AppController {
     private void handleDeleteUser(SettingPage settingPage) {
         do {
             try {
-                String password = ConsoleAssistant.readPassword("Enter Your Password : ");
+                String password = ConsoleAssistant.readPassword("\nEnter Your Password : ");
                 userService.deleteUser(currentUser.getPhoneNumber(), password);
-                ConsoleAssistant.clear();
                 currentUser = null;
                 settingPage.success("Your wallet was deleted successfully.");
                 return;
             } catch (AuthenticationException e) {
                 settingPage.error(e.getMessage());
             }
-        } while (ConsoleAssistant.readIntInRange("Again ? Press 1 , for Back press 0 : ", 0, 1) == 1);
+        } while (ConsoleAssistant.readIntInRange("\nAgain ? Press 1 , for Back press 0 : ", 0, 1) == 1);
         ConsoleAssistant.clear();
     }
 

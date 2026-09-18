@@ -1,5 +1,7 @@
 package model;
 
+import ui.Page;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
@@ -60,9 +62,11 @@ public class Transaction {
         if (type == TransactionType.TRANSFER)
             return "[ID]." + id + "  [Type]." + type + "  [Amount]." + amount
                     + "  [From] : " + sender + "  [To] : " + receiver
-                    + "  [Date]." + formattedDate;
+                    + "  [Date]." + formattedDate
+                    + "\n--------------------------------------------------------------------------------";
 
-        return "[ID]." + id + "  [Type]." + type + "  [Amount]." + amount + "  [Date]." + formattedDate;
+        return "[ID]." + id + "  [Type]." + type + "  [Amount]." + amount + "  [Date]." + formattedDate
+                + "\n--------------------------------------------------------------------------------";
 
     }
 }
